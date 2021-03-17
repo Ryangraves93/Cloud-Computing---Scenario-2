@@ -4,7 +4,7 @@
   <table id="table-festival" class="table table-hover">
     <tbody>
       <tr>
-        <td><img :src="s3_url+festival.image_path" height="200px" /></td>
+        <td><img :src="festival.image_path" height="200px" /></td>
       </tr>
       <tr>
         <td width="20%">Title</td>
@@ -58,8 +58,14 @@ export default {
       console.log(this.$route.params.id);
       api.get(`/festivals/${this.$route.params.id}`)
         .then(response => {
+          let resultFestival = response.data;
+          if(resultFestival.image_path)
+          {
+            resultFestival.image_path = this.s3_url + resultFestival.image_path;
+          }
+
           console.log(response);
-          this.festival = response.data
+          this.festival = resultFestival;
         })
         .catch(error => console.log(error))
     },
